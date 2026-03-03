@@ -1030,6 +1030,8 @@ ${text}`;
     doc.setFontSize(fontSize);
     return doc.splitTextToSize(text, maxWidth);
   }
+
+  function resetApp() {
     document.getElementById('result-area').classList.remove('show');
     document.getElementById('input-area').style.display = 'block';
     document.getElementById('btn-check').disabled = false;
