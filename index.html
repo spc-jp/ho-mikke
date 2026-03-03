@@ -5,7 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>法みっけ｜契約書リーガルチェックAI</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style id="print-style">
+@media print {
+  body { background: #fff !important; }
+  header { background: #0d1b2a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .header-text h1 { color: #fff !important; }
+  .header-text h1 span { color: #c8a84b !important; }
+  .header-text p { color: rgba(255,255,255,0.6) !important; }
+  .logo-mark { color: #c8a84b !important; border-color: #c8a84b !important; }
+  .badge { display: none; }
+  .step-bar { display: none; }
+  #input-area { display: none !important; }
+  #loading-wrap { display: none !important; }
+  .btn-pdf, .btn-reset { display: none !important; }
+  .result-summary { background: #0d1b2a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff !important; }
+  .count-red .count-num { color: #e74c3c !important; }
+  .count-orange .count-num { color: #f39c12 !important; }
+  .count-green .count-num { color: #2ecc71 !important; }
+  .check-item { break-inside: avoid; border-left-width: 4px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .check-item.level-red { border-left-color: #c0392b !important; }
+  .check-item.level-orange { border-left-color: #d35400 !important; }
+  .check-item.level-green { border-left-color: #1a6b3a !important; }
+  .level-red .level-badge { background: #fde8e6 !important; color: #c0392b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .level-orange .level-badge { background: #fef3e2 !important; color: #d35400 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .level-green .level-badge { background: #e6f4ec !important; color: #1a6b3a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .item-advice { background: #faf7f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .overall-comment { border-top-color: #c8a84b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .overall-label { color: #c8a84b !important; }
+  footer { background: #0d1b2a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #result-area { display: block !important; }
+}
+</style>
 <style>
   :root {
     --navy: #0d1b2a;
@@ -841,189 +871,11 @@ ${text}`;
   }
 
   function exportPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    window.print();
+  }
 
-    const pageW = 210;
-    const margin = 18;
-    const contentW = pageW - margin * 2;
-    let y = 0;
-
-    const levelLabel = { red: '🔴 要注意', orange: '🟡 確認推奨', green: '🟢 問題なし' };
-    const levelColor = { red: [192, 57, 43], orange: [211, 84, 0], green: [26, 107, 58] };
-
-    // ヘッダー背景
-    doc.setFillColor(13, 27, 42);
-    doc.rect(0, 0, pageW, 28, 'F');
-
-    doc.setTextColor(200, 168, 75);
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('LEGAL CHECK REPORT', margin, 13);
-
-    doc.setTextColor(180, 180, 180);
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'normal');
-    doc.text('powered by Houmikke AI  /  Smile Plus Consulting', margin, 20);
-
-    const now = new Date();
-    const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}  ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-    doc.text(dateStr, pageW - margin, 20, { align: 'right' });
-
-    y = 36;
-
-    // 文書種別
-    doc.setTextColor(13, 27, 42);
-    doc.setFontSize(13);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Document: ' + selectedType, margin, y);
-    y += 8;
-
-    // カウントサマリー
-    const redC = parseInt(document.getElementById('count-red').textContent);
-    const orgC = parseInt(document.getElementById('count-orange').textContent);
-    const grnC = parseInt(document.getElementById('count-green').textContent);
-
-    const countBoxes = [
-      { label: 'ATTENTION', count: redC, color: [192,57,43] },
-      { label: 'REVIEW', count: orgC, color: [211,84,0] },
-      { label: 'OK', count: grnC, color: [26,107,58] }
-    ];
-
-    countBoxes.forEach((cb, i) => {
-      const bx = margin + i * 58;
-      doc.setFillColor(...cb.color);
-      doc.roundedRect(bx, y, 52, 16, 2, 2, 'F');
-      doc.setTextColor(255,255,255);
-      doc.setFontSize(16);
-      doc.setFont('helvetica', 'bold');
-      doc.text(String(cb.count), bx + 10, y + 11);
-      doc.setFontSize(8);
-      doc.setFont('helvetica', 'normal');
-      doc.text(cb.label, bx + 22, y + 11);
-    });
-
-    y += 24;
-
-    // 区切り線
-    doc.setDrawColor(200, 168, 75);
-    doc.setLineWidth(0.5);
-    doc.line(margin, y, pageW - margin, y);
-    y += 8;
-
-    // 各チェック項目
-    const items = document.querySelectorAll('.check-item');
-
-    items.forEach((item, idx) => {
-      const level = item.classList.contains('level-red') ? 'red'
-        : item.classList.contains('level-orange') ? 'orange' : 'green';
-      const title = item.querySelector('.item-title')?.textContent || '';
-      const category = item.querySelector('.item-category')?.textContent || '';
-      const desc = item.querySelector('.item-desc')?.textContent || '';
-      const advice = item.querySelector('.item-advice')?.textContent?.replace('💡 改善ヒント：', '') || '';
-
-      // ページ溢れチェック
-      const estimatedH = 8 + splitLines(doc, desc, contentW - 6, 9).length * 5 + (advice ? splitLines(doc, advice, contentW - 10, 8).length * 4 + 8 : 0) + 10;
-      if (y + estimatedH > 272) {
-        doc.addPage();
-        y = 18;
-      }
-
-      // レベルバー
-      doc.setFillColor(...levelColor[level]);
-      doc.rect(margin, y, 3, estimatedH - 4, 'F');
-
-      // ラベル
-      doc.setFillColor(...levelColor[level].map(c => Math.min(c + 180, 255)));
-      doc.roundedRect(margin + 6, y, 28, 5.5, 1, 1, 'F');
-      doc.setTextColor(...levelColor[level]);
-      doc.setFontSize(7);
-      doc.setFont('helvetica', 'bold');
-      doc.text(levelLabel[level].replace(/🔴|🟡|🟢/g,'').trim(), margin + 8, y + 3.8);
-
-      doc.setTextColor(100, 100, 100);
-      doc.setFontSize(7.5);
-      doc.setFont('helvetica', 'normal');
-      doc.text(category, margin + 38, y + 3.8);
-
-      y += 7;
-
-      // タイトル
-      doc.setTextColor(13, 27, 42);
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'bold');
-      doc.text(title, margin + 6, y);
-      y += 5.5;
-
-      // 説明
-      doc.setTextColor(60, 60, 60);
-      doc.setFontSize(8.5);
-      doc.setFont('helvetica', 'normal');
-      const descLines = splitLines(doc, desc, contentW - 8, 8.5);
-      descLines.forEach(line => { doc.text(line, margin + 6, y); y += 4.5; });
-
-      // 改善ヒント
-      if (advice) {
-        y += 2;
-        doc.setFillColor(250, 247, 242);
-        const adviceLines = splitLines(doc, advice, contentW - 14, 8);
-        doc.roundedRect(margin + 6, y - 2, contentW - 6, adviceLines.length * 4 + 6, 1, 1, 'F');
-        doc.setTextColor(180, 130, 0);
-        doc.setFontSize(7.5);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Hint:', margin + 9, y + 2);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(80, 60, 0);
-        adviceLines.forEach(line => { doc.text(line, margin + 18, y + 2); y += 4; });
-        y += 4;
-      }
-
-      y += 6;
-
-      // 区切り
-      doc.setDrawColor(220, 215, 205);
-      doc.setLineWidth(0.2);
-      doc.line(margin + 6, y - 3, pageW - margin, y - 3);
-    });
-
-    // 総評
-    const overall = document.getElementById('overall-text').textContent;
-    if (overall) {
-      if (y + 30 > 272) { doc.addPage(); y = 18; }
-      y += 4;
-      doc.setFillColor(13, 27, 42);
-      doc.rect(margin, y, contentW, 7, 'F');
-      doc.setTextColor(200, 168, 75);
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'bold');
-      doc.text('AI OVERALL COMMENT', margin + 4, y + 5);
-      y += 11;
-
-      doc.setTextColor(50, 50, 50);
-      doc.setFontSize(8.5);
-      doc.setFont('helvetica', 'normal');
-      splitLines(doc, overall, contentW, 8.5).forEach(line => {
-        if (y > 272) { doc.addPage(); y = 18; }
-        doc.text(line, margin, y);
-        y += 5;
-      });
-    }
-
-    // フッター（全ページ）
-    const totalPages = doc.getNumberOfPages();
-    for (let p = 1; p <= totalPages; p++) {
-      doc.setPage(p);
-      doc.setFillColor(13, 27, 42);
-      doc.rect(0, 285, pageW, 12, 'F');
-      doc.setTextColor(120, 120, 120);
-      doc.setFontSize(7);
-      doc.setFont('helvetica', 'normal');
-      doc.text('本レポートはAIによる参考情報です。最終判断は専門家にご相談ください。', margin, 291);
-      doc.text(`${p} / ${totalPages}`, pageW - margin, 291, { align: 'right' });
-    }
-
-    const filename = `法みっけ_${selectedType}_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.pdf`;
-    doc.save(filename);
+  function splitLines(doc, text, maxWidth, fontSize) {
+    return [text];
   }
 
   function splitLines(doc, text, maxWidth, fontSize) {
