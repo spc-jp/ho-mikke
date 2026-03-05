@@ -5,15 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>法みっけ｜契約書リーガルチェックAI</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- PDF生成用ライブラリを追加 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- PDF読み込み用ライブラリを追加 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+</script>
 <style id="print-style">
 @media print {
   body { background: #fff !important; }
-  header { background: #0d1b2a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  header { background: #0d1b2a !important; position: static !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .header-text h1 { color: #fff !important; }
   .header-text h1 span { color: #c8a84b !important; }
   .header-text p { color: rgba(255,255,255,0.6) !important; }
   .logo-mark { color: #c8a84b !important; border-color: #c8a84b !important; }
   .badge { display: none; }
+  .header-actions { display: none !important; }
   .step-bar { display: none; }
   #input-area { display: none !important; }
   #loading-wrap { display: none !important; }
@@ -63,8 +71,11 @@
   header {
     background: var(--navy);
     padding: 0;
-    position: relative;
-    overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    overflow: visible;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
   header::before {
@@ -78,27 +89,41 @@
       rgba(200,168,75,0.04) 40px,
       rgba(200,168,75,0.04) 41px
     );
+    z-index: 0;
   }
 
   .header-inner {
     max-width: 900px;
     margin: 0 auto;
-    padding: 36px 24px 30px;
+    padding: 24px 24px 20px;
     position: relative;
     display: flex;
     align-items: center;
     gap: 20px;
+    z-index: 1;
+  }
+
+  /* ヘッダーブランド（ロゴ＋タイトル） */
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .header-brand:hover {
+    opacity: 0.8;
   }
 
   .logo-mark {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     border: 2px solid var(--gold);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Noto Serif JP', serif;
-    font-size: 22px;
+    font-size: 18px;
     color: var(--gold);
     flex-shrink: 0;
     position: relative;
@@ -107,13 +132,13 @@
   .logo-mark::after {
     content: '';
     position: absolute;
-    top: 4px; left: 4px; right: -4px; bottom: -4px;
+    top: 3px; left: 3px; right: -3px; bottom: -3px;
     border: 1px solid rgba(200,168,75,0.3);
   }
 
   .header-text h1 {
     font-family: 'Noto Serif JP', serif;
-    font-size: 28px;
+    font-size: 22px;
     color: #fff;
     letter-spacing: 0.12em;
   }
@@ -124,13 +149,12 @@
 
   .header-text p {
     color: rgba(255,255,255,0.55);
-    font-size: 12px;
-    margin-top: 4px;
+    font-size: 10px;
+    margin-top: 2px;
     letter-spacing: 0.08em;
   }
 
   .badge {
-    margin-left: auto;
     background: rgba(200,168,75,0.15);
     border: 1px solid rgba(200,168,75,0.4);
     color: var(--gold2);
@@ -139,6 +163,104 @@
     padding: 4px 10px;
     border-radius: 2px;
     align-self: flex-start;
+  }
+
+  /* ヘッダーアクション（使い方・設定） */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+
+  .action-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .action-btn:hover {
+    background: rgba(255,255,255,0.15);
+  }
+
+  .settings-wrap {
+    position: relative;
+  }
+
+  .settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    width: 220px;
+    padding: 8px 0;
+    display: none;
+    z-index: 100;
+  }
+
+  .settings-dropdown.show {
+    display: block;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .theme-btn {
+    background: #f0f0f0;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .settings-divider {
+    height: 1px;
+    background: #eee;
+    margin: 4px 0;
+  }
+
+  .demo-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: #999;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .demo-btn:hover {
+    background: rgba(0,0,0,0.04);
+    color: #666;
   }
 
   /* メイン */
@@ -254,14 +376,102 @@
     color: #fff;
   }
 
-  /* テキストエリア */
-  .text-area-wrap {
+  /* 新・ファイルドロップエリア */
+  .file-drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background: #fafafa;
+    padding: 40px 20px;
+    text-align: center;
+    transition: all 0.2s;
     position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
   }
 
+  .file-drop-area.dragover {
+    border-color: var(--gold);
+    background: rgba(200,168,75,0.08);
+  }
+
+  .file-drop-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .file-drop-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .file-drop-sub {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 16px;
+  }
+
+  .btn-select-file {
+    background: #fff;
+    border: 1px solid var(--navy);
+    color: var(--navy);
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-select-file:hover {
+    background: var(--navy);
+    color: #fff;
+  }
+
+  /* 区切り線 */
+  .or-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px 0;
+    color: #aaa;
+    font-size: 12px;
+  }
+
+  .or-divider::before, .or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .or-divider span {
+    padding: 0 16px;
+  }
+
+  /* 読み込みローディング */
+  .file-loading {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.9);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 8px;
+  }
+
+  .file-loading.show {
+    display: flex;
+  }
+
+  /* テキストエリア */
   textarea {
     width: 100%;
-    min-height: 220px;
+    min-height: 180px;
     padding: 16px;
     border: 1.5px solid #e0ddd5;
     border-radius: 4px;
@@ -565,6 +775,85 @@
 
   .btn-pdf:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,168,75,0.35); }
 
+  /* モーダル */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  
+  .modal-content {
+    background: #fff;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    padding: 32px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: fadeUp 0.3s ease;
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+  }
+  .modal-close:hover { color: #333; }
+  
+  .modal-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 20px;
+    color: var(--navy);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .modal-section { margin-bottom: 24px; }
+  .modal-section h3 {
+    font-size: 15px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(200,168,75,0.3);
+    padding-bottom: 4px;
+  }
+  .modal-section p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #444;
+  }
+  
+  .modal-list {
+    list-style: none;
+    padding: 0;
+  }
+  .modal-list li {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 10px;
+    padding-left: 1.6em;
+    position: relative;
+  }
+  .modal-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: bold;
+  }
+
   /* フッター */
   footer {
     background: var(--navy);
@@ -592,9 +881,50 @@
 
   .error-box.show { display: block; }
 
+  /* ダークモードスタイル */
+  body.dark-mode {
+    --cream2: #121212;
+    --text: #e0e0e0;
+    --navy: #1a2a3a;
+  }
+  body.dark-mode .card { background: #1e1e1e; border-color: #333; }
+  body.dark-mode textarea { background: #121212; color: #e0e0e0; border-color: #444; }
+  body.dark-mode textarea:focus { border-color: var(--gold); background: #1a1a1a; }
+  body.dark-mode .check-type-btn { background: #2a2a2a; border-color: #444; color: #aaa; }
+  body.dark-mode .check-type-btn.selected { background: var(--navy); border-color: var(--navy); color: #fff; }
+  body.dark-mode .file-drop-area { background: #1a1a1a; border-color: #444; }
+  body.dark-mode .file-drop-area.dragover { border-color: var(--gold); background: rgba(200,168,75,0.1); }
+  body.dark-mode .file-drop-text { color: #eee; }
+  body.dark-mode .btn-select-file { background: #333; border-color: #666; color: #ccc; }
+  body.dark-mode .btn-select-file:hover { background: #888; color: #121212; border-color: #888; }
+  body.dark-mode .or-divider::before, body.dark-mode .or-divider::after { border-color: #444; }
+  body.dark-mode .or-divider { color: #888; }
+  body.dark-mode .file-loading { background: rgba(30,30,30,0.9); }
+  body.dark-mode .step.active { color: #fff; }
+  body.dark-mode .step-num { background: #444; color: #888; }
+  body.dark-mode .step.active .step-num { background: var(--navy); color: #fff; }
+  body.dark-mode .check-item { background: #1e1e1e; border-color: #333; }
+  body.dark-mode .item-title { color: #fff; }
+  body.dark-mode .item-desc { color: #ccc; }
+  body.dark-mode .item-advice { background: #2a2a2a; color: #ddd; }
+  body.dark-mode .overall-comment { background: #1e1e1e; }
+  body.dark-mode .overall-text { color: #eee; }
+  body.dark-mode .btn-reset { border-color: #888; color: #ccc; }
+  body.dark-mode .btn-reset:hover { background: #333; color: #fff; border-color: #333; }
+  body.dark-mode .caution { background: #2a2411; border-color: #5c4e1a; color: #d4b85c; }
+  body.dark-mode .settings-dropdown { background: #1e1e1e; border-color: #444; color: #eee; }
+  body.dark-mode .settings-divider { background: #333; }
+  body.dark-mode .theme-btn { background: #444; color: #fff; }
+  body.dark-mode .demo-btn:hover { background: rgba(255,255,255,0.05); color: #aaa; }
+  body.dark-mode .modal-content { background: #1e1e1e; color: #e0e0e0; }
+  body.dark-mode .modal-close:hover { color: #fff; }
+  body.dark-mode .modal-title { color: #fff; }
+  body.dark-mode .modal-section p, body.dark-mode .modal-list li { color: #ccc; }
+
   @media (max-width: 600px) {
     .header-inner { flex-wrap: wrap; }
-    .badge { order: -1; margin-left: 0; }
+    .header-actions { margin-left: 0; width: 100%; justify-content: flex-end; order: 3; }
+    .badge { margin-left: auto; }
     .result-summary { flex-direction: column; align-items: flex-start; }
     .summary-counts { gap: 20px; }
     .card { padding: 20px; }
@@ -605,12 +935,33 @@
 
 <header>
   <div class="header-inner">
-    <div class="logo-mark">法</div>
-    <div class="header-text">
-      <h1>法<span>みっけ</span></h1>
-      <p>CONTRACT & LEGAL RISK CHECKER powered by AI</p>
+    <div class="header-brand" onclick="resetApp()" title="トップに戻る">
+      <div class="logo-mark">法</div>
+      <div class="header-text">
+        <h1>法<span>みっけ</span></h1>
+        <p>CONTRACT & LEGAL RISK CHECKER powered by AI</p>
+      </div>
     </div>
+    
     <div class="badge">AI POWERED</div>
+
+    <!-- アクションボタンエリア -->
+    <div class="header-actions">
+      <button class="action-btn" onclick="openHowTo()">📖 使い方</button>
+      
+      <div class="settings-wrap">
+        <button class="action-btn" onclick="toggleSettings(event)">⚙️ 設定</button>
+        <div class="settings-dropdown" id="settings-dropdown">
+          <div class="settings-row">
+            <span>背景色</span>
+            <button class="theme-btn" id="theme-btn" onclick="toggleTheme(event)">🌙 ダーク</button>
+          </div>
+          <div class="settings-divider"></div>
+          <button class="demo-btn" onclick="insertDemo()">デモデータ挿入</button>
+          <button class="demo-btn" onclick="clearDemo()">デモデータクリア</button>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -648,14 +999,30 @@
         <button class="check-type-btn" data-type="薬機法関連文書">💊 薬機法関連文書</button>
       </div>
 
-      <div class="text-area-wrap">
-        <textarea id="contract-text" placeholder="ここに契約書や法律文書のテキストを貼り付けてください。
+      <!-- ファイルドロップエリア -->
+      <div class="file-drop-area" id="file-drop-area">
+        <input type="file" id="file-input" accept=".txt,.pdf" style="display: none;">
+        <div class="file-drop-icon">📄</div>
+        <div class="file-drop-text">ここにPDFまたはテキストファイルをドロップ</div>
+        <div class="file-drop-sub">または</div>
+        <button class="btn-select-file" onclick="document.getElementById('file-input').click()">パソコンからファイルを選択</button>
+        
+        <!-- ファイル読み込み中の表示 -->
+        <div class="file-loading" id="file-loading">
+          <div class="loading-spinner" style="width:30px;height:30px;border-width:2px;margin-bottom:12px;"></div>
+          <div style="font-size:12px;color:var(--navy);font-weight:600;">ファイルを読み込み中...</div>
+        </div>
+      </div>
 
-【例】
+      <div class="or-divider"><span>またはテキストを直接入力・貼り付け</span></div>
+
+      <!-- テキストエリア -->
+      <div class="text-area-wrap">
+        <textarea id="contract-text" placeholder="【例】
 第1条（目的）
 本契約は、甲と乙との間で...
 
-AIが自動的にリスクポイントを検出し、改善ヒントをお伝えします。"></textarea>
+※ファイルを選択・ドロップすると、ここにテキストが自動で抽出されます。"></textarea>
       </div>
       <div class="char-count"><span id="char-count">0</span> 文字</div>
 
@@ -722,6 +1089,30 @@ AIが自動的にリスクポイントを検出し、改善ヒントをお伝え
   ※本ツールはAIによる参考情報提供です。最終判断は専門家にご相談ください。
 </footer>
 
+<!-- 使い方モーダル -->
+<div class="modal-overlay" id="howto-modal" onclick="closeHowTo(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeHowTo()">&times;</button>
+    <h2 class="modal-title">📖 法みっけの使い方</h2>
+    
+    <div class="modal-section">
+      <h3>🎯 アプリの目的</h3>
+      <p>「法みっけ」は、AIを活用して契約書や法律文書に潜むリスクを迅速に洗い出し、安全な取引を行うためのサポートを目的としたツールです。専門家に相談する前のセルフチェックとしてご活用いただけます。</p>
+    </div>
+    
+    <div class="modal-section">
+      <h3>📝 使い方</h3>
+      <ul class="modal-list">
+        <li><strong>ステップ1：</strong> チェックする文書の種類（一般契約書、NDAなど）を選択します。</li>
+        <li><strong>ステップ2：</strong> 契約書のPDFまたはテキストファイルをドラッグ＆ドロップして読み込ませるか、下のエリアに直接テキストを貼り付けます。</li>
+        <li><strong>ステップ3：</strong> 「AIリーガルチェックを開始する」ボタンをクリックします。</li>
+        <li><strong>ステップ4：</strong> 数十秒でAIが分析を行い、リスク度合い（赤・黄・緑）に応じた結果と改善ヒントを表示します。</li>
+        <li><strong>ステップ5：</strong> 必要に応じて「チェック結果をPDFで保存する」ボタンからレポートを保存・印刷してください。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <script>
   let selectedType = '一般契約書';
 
@@ -738,6 +1129,157 @@ AIが自動的にリスクポイントを検出し、改善ヒントをお伝え
   document.getElementById('contract-text').addEventListener('input', function() {
     document.getElementById('char-count').textContent = this.value.length.toLocaleString();
   });
+
+  // ========== ファイル読み込み・ドラッグ＆ドロップ処理 ==========
+  // ドロップエリアとテキストエリアの両方でドロップを受け付けるようにする
+  const dropZones = [document.getElementById('file-drop-area'), document.querySelector('.text-area-wrap')];
+  const fileInput = document.getElementById('file-input');
+  const fileLoading = document.getElementById('file-loading');
+  const textarea = document.getElementById('contract-text');
+
+  dropZones.forEach(zone => {
+    if(!zone) return;
+    
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      document.getElementById('file-drop-area').classList.add('dragover');
+    });
+
+    zone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      document.getElementById('file-drop-area').classList.remove('dragover');
+    });
+
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      document.getElementById('file-drop-area').classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+  });
+
+  // ファイル選択イベント
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      handleFile(e.target.files[0]);
+    }
+  });
+
+  async function handleFile(file) {
+    fileLoading.classList.add('show');
+    hideError();
+
+    try {
+      let text = '';
+      if (file.type === 'application/pdf') {
+        text = await extractTextFromPDF(file);
+      } else if (file.type === 'text/plain') {
+        text = await file.text();
+      } else {
+        throw new Error('対応していないファイル形式です。PDFまたはテキストファイル(.txt)を選択してください。');
+      }
+      
+      textarea.value = text;
+      document.getElementById('char-count').textContent = textarea.value.length.toLocaleString();
+    } catch (error) {
+      showError(error.message || 'ファイルの読み込みに失敗しました。');
+      console.error(error);
+    } finally {
+      fileLoading.classList.remove('show');
+      fileInput.value = ''; // 連続で同じファイルを選択できるようリセット
+    }
+  }
+
+  // PDFからテキストを抽出する処理
+  async function extractTextFromPDF(file) {
+    const fileUrl = URL.createObjectURL(file);
+    const loadingTask = pdfjsLib.getDocument(fileUrl);
+    const pdf = await loadingTask.promise;
+    let fullText = '';
+    
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const strings = textContent.items.map(item => item.str);
+      // PDFの各要素を結合。簡易的な抽出のためレイアウトは保持されません
+      fullText += strings.join('') + '\n\n'; 
+    }
+    
+    URL.revokeObjectURL(fileUrl); // メモリ解放
+    return fullText;
+  }
+
+  // ========== UI操作スクリプト ==========
+
+  // 設定ドロップダウンのトグル
+  function toggleSettings(e) {
+    e.stopPropagation();
+    document.getElementById('settings-dropdown').classList.toggle('show');
+  }
+
+  // 画面外クリックでドロップダウンを閉じる
+  document.addEventListener('click', (e) => {
+    const dropdown = document.getElementById('settings-dropdown');
+    if (dropdown && dropdown.classList.contains('show') && !e.target.closest('.settings-wrap')) {
+      dropdown.classList.remove('show');
+    }
+  });
+
+  // テーマ切り替え（ダーク・ライト）
+  function toggleTheme(e) {
+    e.stopPropagation();
+    document.body.classList.toggle('dark-mode');
+    const btn = document.getElementById('theme-btn');
+    if (document.body.classList.contains('dark-mode')) {
+      btn.innerHTML = '☀️ ライト';
+    } else {
+      btn.innerHTML = '🌙 ダーク';
+    }
+  }
+
+  // デモデータ挿入
+  function insertDemo() {
+    const demoText = `第1条（目的）
+甲は乙に対し、本件システムの開発業務を委託し、乙はこれを受託する。
+
+第2条（損害賠償）
+甲及び乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償しなければならない。ただし、賠償額は本契約における委託料の1ヶ月分を上限とする。
+
+第3条（解除）
+甲は、乙が本契約の条項に違反した場合、何らの催告を要せず直ちに本契約を解除することができる。
+
+第4条（秘密保持）
+甲及び乙は、本契約に関連して知り得た相手方の秘密情報を第三者に開示してはならない。`;
+    
+    const textarea = document.getElementById('contract-text');
+    textarea.value = demoText;
+    document.getElementById('char-count').textContent = demoText.length.toLocaleString();
+    document.getElementById('settings-dropdown').classList.remove('show');
+    hideError();
+  }
+
+  // デモデータクリア
+  function clearDemo() {
+    const textarea = document.getElementById('contract-text');
+    textarea.value = '';
+    document.getElementById('char-count').textContent = '0';
+    document.getElementById('settings-dropdown').classList.remove('show');
+    hideError();
+  }
+
+  // 使い方モーダル操作
+  function openHowTo() {
+    document.getElementById('howto-modal').classList.add('show');
+  }
+  
+  function closeHowTo(e) {
+    // 背景クリックで閉じる処理
+    if (e && e.target.id !== 'howto-modal') return;
+    document.getElementById('howto-modal').classList.remove('show');
+  }
+
+  // ===================================
 
   async function startCheck() {
     const text = document.getElementById('contract-text').value.trim();
@@ -871,16 +1413,57 @@ ${text}`;
   }
 
   function exportPDF() {
-    window.print();
-  }
+    const btn = document.querySelector('.btn-pdf');
+    const originalText = btn.textContent;
+    btn.textContent = '⏳ PDFを作成中...';
+    btn.disabled = true;
 
-  function splitLines(doc, text, maxWidth, fontSize) {
-    return [text];
-  }
+    // スクロール位置による上部見切れを防ぐため、一時的にトップへ移動
+    const currentScrollY = window.scrollY;
+    window.scrollTo(0, 0);
 
-  function splitLines(doc, text, maxWidth, fontSize) {
-    doc.setFontSize(fontSize);
-    return doc.splitTextToSize(text, maxWidth);
+    // PDF化対象を「結果エリア」のみに変更
+    const element = document.getElementById('result-area');
+
+    // 結果エリア内のボタンを一時的に隠す
+    const hideElements = element.querySelectorAll('.btn-pdf, .btn-reset');
+    const originalDisplays = [];
+    hideElements.forEach((el, index) => {
+      originalDisplays[index] = el.style.display;
+      el.style.display = 'none'; // 一時的に非表示
+    });
+    
+    const opt = {
+      margin:       [15, 10, 15, 10],
+      filename:     `法みっけ_【${selectedType}】_リーガルチェックレポート.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { 
+        scale: 2, 
+        useCORS: true,
+        scrollY: 0
+      },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      // UIを元に戻す
+      hideElements.forEach((el, index) => {
+        el.style.display = originalDisplays[index];
+      });
+      btn.textContent = originalText;
+      btn.disabled = false;
+      window.scrollTo(0, currentScrollY);
+    }).catch(err => {
+      console.error(err);
+      alert('PDFの生成に失敗しました。');
+      hideElements.forEach((el, index) => {
+        el.style.display = originalDisplays[index];
+      });
+      btn.textContent = originalText;
+      btn.disabled = false;
+      window.scrollTo(0, currentScrollY);
+    });
   }
 
   function resetApp() {
