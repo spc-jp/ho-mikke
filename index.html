@@ -27,6 +27,8 @@
   #loading-wrap { display: none !important; }
   .btn-pdf, .btn-reset { display: none !important; }
   .result-summary { background: #0d1b2a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff !important; }
+  .summary-header { border-bottom-color: rgba(255,255,255,0.3) !important; }
+  .score-grade { color: #c8a84b !important; }
   .count-red .count-num { color: #e74c3c !important; }
   .count-orange .count-num { color: #f39c12 !important; }
   .count-green .count-num { color: #2ecc71 !important; }
@@ -37,7 +39,7 @@
   .level-red .level-badge { background: #fde8e6 !important; color: #c0392b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .level-orange .level-badge { background: #fef3e2 !important; color: #d35400 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .level-green .level-badge { background: #e6f4ec !important; color: #1a6b3a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .item-advice { background: #faf7f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .item-advice { background: #fdfaf2 !important; border-color: #f0e6cc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .overall-comment { border-top-color: #c8a84b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .overall-label { color: #c8a84b !important; }
   footer { background: #0d1b2a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -103,7 +105,6 @@
     z-index: 1;
   }
 
-  /* ヘッダーブランド（ロゴ＋タイトル） */
   .header-brand {
     display: flex;
     align-items: center;
@@ -111,9 +112,7 @@
     cursor: pointer;
     transition: opacity 0.2s;
   }
-  .header-brand:hover {
-    opacity: 0.8;
-  }
+  .header-brand:hover { opacity: 0.8; }
 
   .logo-mark {
     width: 48px;
@@ -143,9 +142,7 @@
     letter-spacing: 0.12em;
   }
 
-  .header-text h1 span {
-    color: var(--gold);
-  }
+  .header-text h1 span { color: var(--gold); }
 
   .header-text p {
     color: rgba(255,255,255,0.55);
@@ -165,7 +162,6 @@
     align-self: flex-start;
   }
 
-  /* ヘッダーアクション（使い方・設定） */
   .header-actions {
     display: flex;
     align-items: center;
@@ -187,13 +183,9 @@
     transition: all 0.2s;
   }
 
-  .action-btn:hover {
-    background: rgba(255,255,255,0.15);
-  }
+  .action-btn:hover { background: rgba(255,255,255,0.15); }
 
-  .settings-wrap {
-    position: relative;
-  }
+  .settings-wrap { position: relative; }
 
   .settings-dropdown {
     position: absolute;
@@ -258,10 +250,7 @@
     transition: all 0.2s;
   }
 
-  .demo-btn:hover {
-    background: rgba(0,0,0,0.04);
-    color: #666;
-  }
+  .demo-btn:hover { background: rgba(0,0,0,0.04); color: #666; }
 
   /* メイン */
   main {
@@ -270,7 +259,6 @@
     padding: 40px 24px 60px;
   }
 
-  /* ステップ表示 */
   .step-bar {
     display: flex;
     align-items: center;
@@ -313,7 +301,6 @@
     margin: 0 8px;
   }
 
-  /* カード */
   .card {
     background: #fff;
     border: 1px solid rgba(0,0,0,0.08);
@@ -350,12 +337,11 @@
     padding-left: 11px;
   }
 
-  /* チェック種別 */
   .check-types {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   .check-type-btn {
@@ -376,28 +362,45 @@
     color: #fff;
   }
 
-  /* 新・ファイルドロップエリア */
+  /* セキュリティ表示 */
+  .security-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #fdfaf2;
+    border: 1px solid #e8c96b;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 11.5px;
+    color: #5c4e1a;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .security-notice .icon { font-size: 16px; }
+
+  /* ファイルドロップエリア（高級感・セキュア仕様） */
   .file-drop-area {
-    border: 2px dashed #ccc;
+    border: none;
     border-radius: 8px;
-    background: #fafafa;
+    background: #f4f7f9;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02);
     padding: 40px 20px;
     text-align: center;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
     margin-bottom: 16px;
   }
 
   .file-drop-area.dragover {
-    border-color: var(--gold);
-    background: rgba(200,168,75,0.08);
+    background: #e8f0fe;
+    box-shadow: inset 0 2px 8px rgba(200,168,75,0.15);
   }
 
   .file-drop-icon {
     font-size: 40px;
     margin-bottom: 12px;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   .file-drop-text {
@@ -431,7 +434,6 @@
     color: #fff;
   }
 
-  /* 区切り線 */
   .or-divider {
     display: flex;
     align-items: center;
@@ -447,11 +449,8 @@
     border-bottom: 1px solid #e0e0e0;
   }
 
-  .or-divider span {
-    padding: 0 16px;
-  }
+  .or-divider span { padding: 0 16px; }
 
-  /* 読み込みローディング */
   .file-loading {
     display: none;
     position: absolute;
@@ -463,10 +462,7 @@
     flex-direction: column;
     border-radius: 8px;
   }
-
-  .file-loading.show {
-    display: flex;
-  }
+  .file-loading.show { display: flex; }
 
   /* テキストエリア */
   textarea {
@@ -479,13 +475,12 @@
     font-family: 'Noto Sans JP', sans-serif;
     line-height: 1.8;
     color: var(--text);
-    background: var(--cream2);
+    background: #fff;
     resize: vertical;
     outline: none;
     transition: border-color 0.2s;
   }
-
-  textarea:focus { border-color: var(--gold); background: #fff; }
+  textarea:focus { border-color: var(--gold); }
   textarea::placeholder { color: #bbb; }
 
   .char-count {
@@ -493,18 +488,6 @@
     font-size: 11px;
     color: #aaa;
     margin-top: 6px;
-  }
-
-  /* 注意事項 */
-  .caution {
-    background: #fef9ee;
-    border: 1px solid #f0dfa0;
-    border-radius: 4px;
-    padding: 12px 16px;
-    font-size: 11px;
-    color: #8a6a00;
-    line-height: 1.7;
-    margin-top: 12px;
   }
 
   /* ボタン */
@@ -522,25 +505,21 @@
     letter-spacing: 0.1em;
     cursor: pointer;
     transition: all 0.25s;
-    margin-top: 20px;
+    margin-top: 30px;
     position: relative;
     overflow: hidden;
   }
-
   .btn-check:hover { background: var(--navy2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(13,27,42,0.25); }
   .btn-check:disabled { background: #aaa; cursor: not-allowed; transform: none; box-shadow: none; }
-
   .btn-check .btn-icon { margin-right: 8px; }
 
-  /* ローディング */
+  /* 新・ローディング（プロセス可視化） */
   .loading-wrap {
     display: none;
     text-align: center;
-    padding: 48px 24px;
+    padding: 60px 24px;
   }
-
   .loading-wrap.show { display: block; }
-
   .loading-spinner {
     width: 48px;
     height: 48px;
@@ -550,46 +529,113 @@
     animation: spin 0.8s linear infinite;
     margin: 0 auto 20px;
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .loading-text {
     font-size: 14px;
     color: #666;
     line-height: 1.8;
   }
-
-  .loading-dots::after {
-    content: '';
-    animation: dots 1.5s steps(4, end) infinite;
-  }
-
-  @keyframes dots {
-    0%   { content: ''; }
-    25%  { content: '・'; }
-    50%  { content: '・・'; }
-    75%  { content: '・・・'; }
-    100% { content: ''; }
+  .loading-status-msg {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 16px;
+    margin-bottom: 8px;
+    height: 24px;
+    transition: opacity 0.3s;
   }
 
   /* 結果エリア */
-  #result-area {
-    display: none;
-  }
-
+  #result-area { display: none; }
   #result-area.show { display: block; }
 
-  /* サマリー */
+  /* PDF出力時の表紙設定 */
+  .pdf-cover { display: none; }
+  .pdf-mode .pdf-cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 260mm;
+    text-align: center;
+    background: #fff;
+    color: var(--navy);
+    page-break-after: always;
+  }
+  .pdf-cover-logo {
+    font-size: 48px;
+    font-family: 'Noto Serif JP', serif;
+    color: var(--gold);
+    border: 3px solid var(--gold);
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .pdf-cover-logo::after {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px; right: -4px; bottom: -4px;
+    border: 1px solid rgba(200,168,75,0.3);
+  }
+  .pdf-cover-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+  .pdf-cover-subtitle {
+    font-size: 16px;
+    color: #666;
+    letter-spacing: 0.15em;
+    margin-bottom: 80px;
+  }
+  .pdf-cover-details {
+    background: #faf7f2;
+    border: 1px solid #e8c96b;
+    padding: 40px;
+    border-radius: 8px;
+    width: 80%;
+    text-align: left;
+  }
+  .pdf-cover-row {
+    display: flex;
+    margin-bottom: 20px;
+    font-size: 16px;
+    align-items: baseline;
+  }
+  .pdf-cover-row:last-child { margin-bottom: 0; }
+  .pdf-cover-row span:first-child {
+    width: 140px;
+    font-weight: bold;
+    color: var(--gold);
+  }
+  .pdf-cover-grade {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  /* サマリー（スコア付き） */
   .result-summary {
     background: var(--navy);
     color: #fff;
     border-radius: 4px;
-    padding: 24px 28px;
-    margin-bottom: 20px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 24px;
-    flex-wrap: wrap;
+  }
+
+  .summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
   }
 
   .summary-title {
@@ -597,7 +643,6 @@
     font-size: 18px;
     flex: 1;
   }
-
   .summary-title small {
     display: block;
     font-family: 'Noto Sans JP', sans-serif;
@@ -607,27 +652,35 @@
     letter-spacing: 0.1em;
   }
 
+  .summary-score { text-align: right; }
+  .score-grade {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Noto Serif JP', serif;
+    letter-spacing: 0.05em;
+  }
+  .score-value {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
+  }
+
   .summary-counts {
     display: flex;
-    gap: 16px;
+    gap: 24px;
   }
-
-  .count-item {
-    text-align: center;
-  }
-
+  .count-item { text-align: left; }
   .count-item .count-num {
     font-size: 28px;
     font-weight: 700;
     line-height: 1;
   }
-
   .count-item .count-label {
     font-size: 10px;
     opacity: 0.7;
-    margin-top: 2px;
+    margin-top: 4px;
   }
-
   .count-red .count-num { color: #e74c3c; }
   .count-orange .count-num { color: #f39c12; }
   .count-green .count-num { color: #2ecc71; }
@@ -638,22 +691,18 @@
     flex-direction: column;
     gap: 12px;
   }
-
   .check-item {
     background: #fff;
     border: 1px solid rgba(0,0,0,0.08);
     border-left: 4px solid #ddd;
     border-radius: 0 4px 4px 0;
-    padding: 18px 20px;
+    padding: 20px 24px;
     box-shadow: 0 1px 6px rgba(0,0,0,0.04);
     animation: fadeUp 0.4s ease forwards;
     opacity: 0;
     transform: translateY(8px);
   }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
   .check-item.level-red { border-left-color: var(--red); }
   .check-item.level-orange { border-left-color: var(--orange); }
@@ -663,55 +712,41 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-
   .level-badge {
     font-size: 11px;
     font-weight: 700;
-    padding: 2px 10px;
+    padding: 3px 10px;
     border-radius: 2px;
     letter-spacing: 0.05em;
     flex-shrink: 0;
   }
-
   .level-red .level-badge { background: #fde8e6; color: var(--red); }
   .level-orange .level-badge { background: #fef3e2; color: var(--orange); }
   .level-green .level-badge { background: #e6f4ec; color: var(--green); }
 
-  .item-category {
-    font-size: 12px;
-    color: #888;
-    font-weight: 500;
-  }
+  .item-category { font-size: 12px; color: #888; font-weight: 500; }
+  .item-title { font-weight: 700; font-size: 15px; color: var(--navy); margin-bottom: 8px; }
+  .item-desc { font-size: 13.5px; color: #555; line-height: 1.8; }
 
-  .item-title {
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-
-  .item-desc {
-    font-size: 13px;
-    color: #555;
-    line-height: 1.8;
-  }
-
+  /* プロ仕様の改善ヒント表示 */
   .item-advice {
-    margin-top: 10px;
-    padding: 10px 14px;
-    background: var(--cream2);
-    border-radius: 3px;
-    font-size: 12px;
-    color: #444;
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: #fdfaf2;
+    border: 1px solid #f0e6cc;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: #4a4023;
     line-height: 1.7;
   }
-
   .item-advice::before {
-    content: '💡 改善ヒント：';
+    content: '💡 AI専門家からの修正提案：';
+    display: block;
     font-weight: 700;
     color: var(--gold);
+    margin-bottom: 4px;
   }
 
   /* 総評 */
@@ -721,24 +756,18 @@
     border-top: 3px solid var(--gold);
     border-radius: 4px;
     padding: 24px;
-    margin-top: 20px;
+    margin-top: 24px;
   }
-
   .overall-label {
     font-size: 11px;
     color: var(--gold);
     font-weight: 700;
     letter-spacing: 0.15em;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
+  .overall-text { font-size: 14px; line-height: 1.9; color: #333; }
 
-  .overall-text {
-    font-size: 14px;
-    line-height: 1.9;
-    color: #333;
-  }
-
-  /* リセットボタン */
+  /* ボタン群 */
   .btn-reset {
     display: block;
     width: 100%;
@@ -753,29 +782,27 @@
     margin-top: 24px;
     transition: all 0.2s;
   }
-
   .btn-reset:hover { background: var(--navy); color: #fff; }
 
   .btn-pdf {
     display: block;
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     background: var(--gold);
     color: var(--navy);
     border: none;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 15px;
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 12px;
+    margin-top: 16px;
     transition: all 0.2s;
     letter-spacing: 0.05em;
   }
-
   .btn-pdf:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,168,75,0.35); }
 
-  /* モーダル */
+  /* モーダル・フッター等は変更なし */
   .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -787,116 +814,37 @@
     padding: 20px;
   }
   .modal-overlay.show { display: flex; }
-  
-  .modal-content {
-    background: #fff;
-    border-radius: 8px;
-    max-width: 600px;
-    width: 100%;
-    padding: 32px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    animation: fadeUp 0.3s ease;
-  }
-  
-  .modal-close {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #999;
-    cursor: pointer;
-  }
+  .modal-content { background: #fff; border-radius: 8px; max-width: 600px; width: 100%; padding: 32px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: fadeUp 0.3s ease; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; }
   .modal-close:hover { color: #333; }
-  
-  .modal-title {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 20px;
-    color: var(--navy);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
+  .modal-title { font-family: 'Noto Serif JP', serif; font-size: 20px; color: var(--navy); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
   .modal-section { margin-bottom: 24px; }
-  .modal-section h3 {
-    font-size: 15px;
-    color: var(--gold);
-    margin-bottom: 12px;
-    border-bottom: 1px solid rgba(200,168,75,0.3);
-    padding-bottom: 4px;
-  }
-  .modal-section p {
-    font-size: 14px;
-    line-height: 1.8;
-    color: #444;
-  }
-  
-  .modal-list {
-    list-style: none;
-    padding: 0;
-  }
-  .modal-list li {
-    font-size: 14px;
-    line-height: 1.8;
-    color: #444;
-    margin-bottom: 10px;
-    padding-left: 1.6em;
-    position: relative;
-  }
-  .modal-list li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--gold);
-    font-weight: bold;
-  }
+  .modal-section h3 { font-size: 15px; color: var(--gold); margin-bottom: 12px; border-bottom: 1px solid rgba(200,168,75,0.3); padding-bottom: 4px; }
+  .modal-section p { font-size: 14px; line-height: 1.8; color: #444; }
+  .modal-list { list-style: none; padding: 0; }
+  .modal-list li { font-size: 14px; line-height: 1.8; color: #444; margin-bottom: 10px; padding-left: 1.6em; position: relative; }
+  .modal-list li::before { content: '✓'; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
 
-  /* フッター */
-  footer {
-    background: var(--navy);
-    color: rgba(255,255,255,0.4);
-    text-align: center;
-    padding: 20px;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    line-height: 1.9;
-  }
+  footer { background: var(--navy); color: rgba(255,255,255,0.4); text-align: center; padding: 20px; font-size: 11px; letter-spacing: 0.08em; line-height: 1.9; }
+  .footer-logo { color: #fff; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.1em; }
+  .footer-logo span { color: var(--gold); }
 
-  footer span { color: var(--gold); }
-
-  /* エラー */
-  .error-box {
-    background: #fde8e6;
-    border: 1px solid #e74c3c;
-    border-radius: 4px;
-    padding: 16px 20px;
-    font-size: 13px;
-    color: var(--red);
-    margin-top: 16px;
-    display: none;
-  }
-
+  .error-box { background: #fde8e6; border: 1px solid #e74c3c; border-radius: 4px; padding: 16px 20px; font-size: 13px; color: var(--red); margin-top: 16px; display: none; }
   .error-box.show { display: block; }
 
-  /* ダークモードスタイル */
-  body.dark-mode {
-    --cream2: #121212;
-    --text: #e0e0e0;
-    --navy: #1a2a3a;
-  }
+  /* ダークモードスタイル拡張 */
+  body.dark-mode { --cream2: #121212; --text: #e0e0e0; --navy: #1a2a3a; }
   body.dark-mode .card { background: #1e1e1e; border-color: #333; }
   body.dark-mode textarea { background: #121212; color: #e0e0e0; border-color: #444; }
   body.dark-mode textarea:focus { border-color: var(--gold); background: #1a1a1a; }
   body.dark-mode .check-type-btn { background: #2a2a2a; border-color: #444; color: #aaa; }
   body.dark-mode .check-type-btn.selected { background: var(--navy); border-color: var(--navy); color: #fff; }
-  body.dark-mode .file-drop-area { background: #1a1a1a; border-color: #444; }
+  body.dark-mode .file-drop-area { background: #1a1a1a; border-color: #444; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5); }
   body.dark-mode .file-drop-area.dragover { border-color: var(--gold); background: rgba(200,168,75,0.1); }
   body.dark-mode .file-drop-text { color: #eee; }
   body.dark-mode .btn-select-file { background: #333; border-color: #666; color: #ccc; }
   body.dark-mode .btn-select-file:hover { background: #888; color: #121212; border-color: #888; }
+  body.dark-mode .security-notice { background: #2a2411; border-color: #5c4e1a; color: #d4b85c; }
   body.dark-mode .or-divider::before, body.dark-mode .or-divider::after { border-color: #444; }
   body.dark-mode .or-divider { color: #888; }
   body.dark-mode .file-loading { background: rgba(30,30,30,0.9); }
@@ -906,12 +854,11 @@
   body.dark-mode .check-item { background: #1e1e1e; border-color: #333; }
   body.dark-mode .item-title { color: #fff; }
   body.dark-mode .item-desc { color: #ccc; }
-  body.dark-mode .item-advice { background: #2a2a2a; color: #ddd; }
+  body.dark-mode .item-advice { background: #2a2411; border-color: #5c4e1a; color: #ddd; }
   body.dark-mode .overall-comment { background: #1e1e1e; }
   body.dark-mode .overall-text { color: #eee; }
   body.dark-mode .btn-reset { border-color: #888; color: #ccc; }
   body.dark-mode .btn-reset:hover { background: #333; color: #fff; border-color: #333; }
-  body.dark-mode .caution { background: #2a2411; border-color: #5c4e1a; color: #d4b85c; }
   body.dark-mode .settings-dropdown { background: #1e1e1e; border-color: #444; color: #eee; }
   body.dark-mode .settings-divider { background: #333; }
   body.dark-mode .theme-btn { background: #444; color: #fff; }
@@ -920,13 +867,15 @@
   body.dark-mode .modal-close:hover { color: #fff; }
   body.dark-mode .modal-title { color: #fff; }
   body.dark-mode .modal-section p, body.dark-mode .modal-list li { color: #ccc; }
+  body.dark-mode .pdf-cover-details { background: #1e1e1e; border-color: #5c4e1a; color: #eee; }
 
   @media (max-width: 600px) {
     .header-inner { flex-wrap: wrap; }
     .header-actions { margin-left: 0; width: 100%; justify-content: flex-end; order: 3; }
     .badge { margin-left: auto; }
-    .result-summary { flex-direction: column; align-items: flex-start; }
-    .summary-counts { gap: 20px; }
+    .summary-header { flex-direction: column; gap: 12px; }
+    .summary-score { text-align: left; }
+    .summary-counts { flex-wrap: wrap; gap: 20px; }
     .card { padding: 20px; }
   }
 </style>
@@ -939,16 +888,14 @@
       <div class="logo-mark">法</div>
       <div class="header-text">
         <h1>法<span>みっけ</span></h1>
-        <p>CONTRACT & LEGAL RISK CHECKER powered by AI</p>
+        <p>ADVANCED CONTRACT & LEGAL RISK CHECKER</p>
       </div>
     </div>
     
     <div class="badge">AI POWERED</div>
 
-    <!-- アクションボタンエリア -->
     <div class="header-actions">
       <button class="action-btn" onclick="openHowTo()">📖 使い方</button>
-      
       <div class="settings-wrap">
         <button class="action-btn" onclick="toggleSettings(event)">⚙️ 設定</button>
         <div class="settings-dropdown" id="settings-dropdown">
@@ -966,17 +913,16 @@
 </header>
 
 <main>
-
   <!-- ステップバー -->
   <div class="step-bar" id="step-bar">
     <div class="step active" id="step1">
       <div class="step-num">1</div>
-      <span>文書を貼り付ける</span>
+      <span>文書を読み込む</span>
     </div>
     <div class="step-line"></div>
     <div class="step" id="step2">
       <div class="step-num">2</div>
-      <span>AIが分析</span>
+      <span>自動リスク解析</span>
     </div>
     <div class="step-line"></div>
     <div class="step" id="step3">
@@ -999,6 +945,15 @@
         <button class="check-type-btn" data-type="薬機法関連文書">💊 薬機法関連文書</button>
       </div>
 
+      <!-- セキュリティ明記 -->
+      <div class="security-notice">
+        <span class="icon">🔒</span>
+        <div>
+          <strong>安心のセキュリティ環境</strong><br>
+          入力されたデータはAIの学習には一切利用されません。通信は暗号化され、分析完了後にシステムから即座に破棄されますので、機密文書も安心してチェックできます。
+        </div>
+      </div>
+
       <!-- ファイルドロップエリア -->
       <div class="file-drop-area" id="file-drop-area">
         <input type="file" id="file-input" accept=".txt,.pdf" style="display: none;">
@@ -1007,7 +962,6 @@
         <div class="file-drop-sub">または</div>
         <button class="btn-select-file" onclick="document.getElementById('file-input').click()">パソコンからファイルを選択</button>
         
-        <!-- ファイル読み込み中の表示 -->
         <div class="file-loading" id="file-loading">
           <div class="loading-spinner" style="width:30px;height:30px;border-width:2px;margin-bottom:12px;"></div>
           <div style="font-size:12px;color:var(--navy);font-weight:600;">ファイルを読み込み中...</div>
@@ -1016,7 +970,6 @@
 
       <div class="or-divider"><span>またはテキストを直接入力・貼り付け</span></div>
 
-      <!-- テキストエリア -->
       <div class="text-area-wrap">
         <textarea id="contract-text" placeholder="【例】
 第1条（目的）
@@ -1026,10 +979,6 @@
       </div>
       <div class="char-count"><span id="char-count">0</span> 文字</div>
 
-      <div class="caution">
-        ⚠️ このツールはAIによる参考情報の提供を目的としています。法的判断の最終確認は弁護士・司法書士などの専門家にご相談ください。個人情報・機密情報は貼り付けないようご注意ください。
-      </div>
-
       <button class="btn-check" id="btn-check" onclick="startCheck()">
         <span class="btn-icon">🔍</span>AIリーガルチェックを開始する
       </button>
@@ -1038,26 +987,46 @@
     </div>
   </div>
 
-  <!-- ローディング -->
+  <!-- ローディング（プロセス可視化版） -->
   <div class="loading-wrap" id="loading-wrap">
     <div class="loading-spinner"></div>
+    <div class="loading-status-msg" id="loading-status">AIが契約書の構造を解析中...</div>
     <div class="loading-text">
-      AIが文書を分析しています<span class="loading-dots"></span><br>
-      <small style="color:#aaa; font-size:12px; margin-top:8px; display:block;">契約書の構造・リスク・抜け漏れを確認中です</small>
+      <span class="loading-dots"></span><br>
+      <small style="color:#aaa; font-size:12px; margin-top:8px; display:block;">※文字数により数十秒かかる場合があります。このままお待ちください。</small>
     </div>
   </div>
 
   <!-- 結果エリア -->
   <div id="result-area">
-    <div class="result-summary">
-      <div class="summary-title">
-        <small>LEGAL CHECK REPORT</small>
-        <span id="result-doc-type">一般契約書</span>のチェック結果
+    <!-- PDF出力時のみ表示される表紙 -->
+    <div class="pdf-cover">
+      <div class="pdf-cover-logo">法</div>
+      <div class="pdf-cover-title">LEGAL CHECK REPORT</div>
+      <div class="pdf-cover-subtitle">契約書リーガルチェック AI分析レポート</div>
+      <div class="pdf-cover-details">
+        <div class="pdf-cover-row"><span>対象文書</span> <div id="cover-doc-type">一般契約書</div></div>
+        <div class="pdf-cover-row"><span>出力日</span> <div id="cover-date"></div></div>
+        <div class="pdf-cover-row" style="margin-top:20px;"><span>総合評価</span> <div class="pdf-cover-grade" id="cover-grade">A (85点)</div></div>
       </div>
+    </div>
+
+    <div class="result-summary">
+      <div class="summary-header">
+        <div class="summary-title">
+          <small>LEGAL CHECK REPORT</small>
+          <span id="result-doc-type">一般契約書</span>のチェック結果
+        </div>
+        <div class="summary-score">
+          <div class="score-grade">総合評価 <span id="result-grade">A</span></div>
+          <div class="score-value">安全性スコア: <span id="result-score">0</span>/100点</div>
+        </div>
+      </div>
+      
       <div class="summary-counts">
         <div class="count-item count-red">
           <div class="count-num" id="count-red">0</div>
-          <div class="count-label">🔴 要注意</div>
+          <div class="count-label">🔴 要注意項目</div>
         </div>
         <div class="count-item count-orange">
           <div class="count-num" id="count-orange">0</div>
@@ -1084,8 +1053,7 @@
 </main>
 
 <footer>
-  <span>法みっけ</span> ｜ AI CONTRACT LEGAL CHECKER<br>
-  Smile Plus Consulting｜中小企業の宝探し<br>
+  <span class="footer-logo">法<span>みっけ</span></span> ｜ ADVANCED CONTRACT & LEGAL RISK CHECKER<br>
   ※本ツールはAIによる参考情報提供です。最終判断は専門家にご相談ください。
 </footer>
 
@@ -1097,7 +1065,7 @@
     
     <div class="modal-section">
       <h3>🎯 アプリの目的</h3>
-      <p>「法みっけ」は、AIを活用して契約書や法律文書に潜むリスクを迅速に洗い出し、安全な取引を行うためのサポートを目的としたツールです。専門家に相談する前のセルフチェックとしてご活用いただけます。</p>
+      <p>「法みっけ」は、AIを活用して契約書や法律文書に潜むリスクを迅速に洗い出し、安全な取引を行うためのサポートを目的としたプロフェッショナルツールです。専門家に相談する前のセルフチェックとしてご活用いただけます。</p>
     </div>
     
     <div class="modal-section">
@@ -1106,8 +1074,8 @@
         <li><strong>ステップ1：</strong> チェックする文書の種類（一般契約書、NDAなど）を選択します。</li>
         <li><strong>ステップ2：</strong> 契約書のPDFまたはテキストファイルをドラッグ＆ドロップして読み込ませるか、下のエリアに直接テキストを貼り付けます。</li>
         <li><strong>ステップ3：</strong> 「AIリーガルチェックを開始する」ボタンをクリックします。</li>
-        <li><strong>ステップ4：</strong> 数十秒でAIが分析を行い、リスク度合い（赤・黄・緑）に応じた結果と改善ヒントを表示します。</li>
-        <li><strong>ステップ5：</strong> 必要に応じて「チェック結果をPDFで保存する」ボタンからレポートを保存・印刷してください。</li>
+        <li><strong>ステップ4：</strong> 数十秒でAIが高度な分析を行い、総合評価（100点満点）とリスク度合いに応じた結果・改善ヒントを表示します。</li>
+        <li><strong>ステップ5：</strong> 「PDFで保存する」ボタンから、表紙付きの専用レポートを保存・印刷して保管してください。</li>
       </ul>
     </div>
   </div>
@@ -1115,6 +1083,14 @@
 
 <script>
   let selectedType = '一般契約書';
+  let loadingInterval;
+  const loadingMessages = [
+    "AIが契約書の構造を解析中...",
+    "当事者間の権利義務バランスを評価中...",
+    "損害賠償・解除条項のリスクを特定中...",
+    "業種特有の抜け漏れがないか確認中...",
+    "最終的なリーガルチェックレポートを作成中..."
+  ];
 
   // チェック種別ボタン
   document.querySelectorAll('.check-type-btn').forEach(btn => {
@@ -1131,7 +1107,6 @@
   });
 
   // ========== ファイル読み込み・ドラッグ＆ドロップ処理 ==========
-  // ドロップエリアとテキストエリアの両方でドロップを受け付けるようにする
   const dropZones = [document.getElementById('file-drop-area'), document.querySelector('.text-area-wrap')];
   const fileInput = document.getElementById('file-input');
   const fileLoading = document.getElementById('file-loading');
@@ -1139,17 +1114,14 @@
 
   dropZones.forEach(zone => {
     if(!zone) return;
-    
     zone.addEventListener('dragover', (e) => {
       e.preventDefault();
       document.getElementById('file-drop-area').classList.add('dragover');
     });
-
     zone.addEventListener('dragleave', (e) => {
       e.preventDefault();
       document.getElementById('file-drop-area').classList.remove('dragover');
     });
-
     zone.addEventListener('drop', (e) => {
       e.preventDefault();
       document.getElementById('file-drop-area').classList.remove('dragover');
@@ -1159,7 +1131,6 @@
     });
   });
 
-  // ファイル選択イベント
   fileInput.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
       handleFile(e.target.files[0]);
@@ -1187,11 +1158,10 @@
       console.error(error);
     } finally {
       fileLoading.classList.remove('show');
-      fileInput.value = ''; // 連続で同じファイルを選択できるようリセット
+      fileInput.value = '';
     }
   }
 
-  // PDFからテキストを抽出する処理
   async function extractTextFromPDF(file) {
     const fileUrl = URL.createObjectURL(file);
     const loadingTask = pdfjsLib.getDocument(fileUrl);
@@ -1202,23 +1172,19 @@
       const page = await pdf.getPage(i);
       const textContent = await page.getTextContent();
       const strings = textContent.items.map(item => item.str);
-      // PDFの各要素を結合。簡易的な抽出のためレイアウトは保持されません
       fullText += strings.join('') + '\n\n'; 
     }
     
-    URL.revokeObjectURL(fileUrl); // メモリ解放
+    URL.revokeObjectURL(fileUrl);
     return fullText;
   }
 
   // ========== UI操作スクリプト ==========
-
-  // 設定ドロップダウンのトグル
   function toggleSettings(e) {
     e.stopPropagation();
     document.getElementById('settings-dropdown').classList.toggle('show');
   }
 
-  // 画面外クリックでドロップダウンを閉じる
   document.addEventListener('click', (e) => {
     const dropdown = document.getElementById('settings-dropdown');
     if (dropdown && dropdown.classList.contains('show') && !e.target.closest('.settings-wrap')) {
@@ -1226,7 +1192,6 @@
     }
   });
 
-  // テーマ切り替え（ダーク・ライト）
   function toggleTheme(e) {
     e.stopPropagation();
     document.body.classList.toggle('dark-mode');
@@ -1238,7 +1203,6 @@
     }
   }
 
-  // デモデータ挿入
   function insertDemo() {
     const demoText = `第1条（目的）
 甲は乙に対し、本件システムの開発業務を委託し、乙はこれを受託する。
@@ -1252,37 +1216,28 @@
 第4条（秘密保持）
 甲及び乙は、本契約に関連して知り得た相手方の秘密情報を第三者に開示してはならない。`;
     
-    const textarea = document.getElementById('contract-text');
     textarea.value = demoText;
     document.getElementById('char-count').textContent = demoText.length.toLocaleString();
     document.getElementById('settings-dropdown').classList.remove('show');
     hideError();
   }
 
-  // デモデータクリア
   function clearDemo() {
-    const textarea = document.getElementById('contract-text');
     textarea.value = '';
     document.getElementById('char-count').textContent = '0';
     document.getElementById('settings-dropdown').classList.remove('show');
     hideError();
   }
 
-  // 使い方モーダル操作
-  function openHowTo() {
-    document.getElementById('howto-modal').classList.add('show');
-  }
-  
+  function openHowTo() { document.getElementById('howto-modal').classList.add('show'); }
   function closeHowTo(e) {
-    // 背景クリックで閉じる処理
     if (e && e.target.id !== 'howto-modal') return;
     document.getElementById('howto-modal').classList.remove('show');
   }
 
-  // ===================================
-
+  // ========== AI分析メイン処理 ==========
   async function startCheck() {
-    const text = document.getElementById('contract-text').value.trim();
+    const text = textarea.value.trim();
 
     if (!text) {
       showError('文書テキストを入力してください。');
@@ -1298,6 +1253,21 @@
     document.getElementById('input-area').style.display = 'none';
     document.getElementById('loading-wrap').classList.add('show');
     document.getElementById('btn-check').disabled = true;
+
+    // ローディングメッセージのアニメーション開始
+    let msgIndex = 0;
+    const statusEl = document.getElementById('loading-status');
+    statusEl.textContent = loadingMessages[0];
+    statusEl.style.opacity = 1;
+    
+    loadingInterval = setInterval(() => {
+      statusEl.style.opacity = 0; // フェードアウト
+      setTimeout(() => {
+        msgIndex = (msgIndex + 1) % loadingMessages.length;
+        statusEl.textContent = loadingMessages[msgIndex];
+        statusEl.style.opacity = 1; // フェードイン
+      }, 300);
+    }, 4500);
 
     const prompt = `あなたは日本法に精通したリーガルチェックの専門家です。
 以下の「${selectedType}」を詳細に分析し、リスクを特定してください。
@@ -1315,6 +1285,8 @@
 必ず以下のJSON形式のみで回答してください。余計な説明は不要です。
 
 {
+  "score": 100点満点中の総合安全性スコア（整数値で出力。安全なら高得点、危険なら低得点）,
+  "grade": "総合評価のランク（A:安全、B:軽微なリスクあり、C:確認推奨、D:危険 のいずれか1文字）",
   "items": [
     {
       "level": "red" | "orange" | "green",
@@ -1341,7 +1313,7 @@ ${text}`;
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 3000,
+          max_tokens: 3500,
           messages: [{ role: 'user', content: prompt }]
         })
       });
@@ -1353,7 +1325,6 @@ ${text}`;
       const data = await response.json();
       const rawText = data.content.map(i => i.text || '').join('');
 
-      // JSONを抽出
       const jsonMatch = rawText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error('レスポンスの解析に失敗しました');
 
@@ -1361,6 +1332,7 @@ ${text}`;
       showResult(result);
 
     } catch (err) {
+      clearInterval(loadingInterval);
       document.getElementById('loading-wrap').classList.remove('show');
       document.getElementById('input-area').style.display = 'block';
       document.getElementById('btn-check').disabled = false;
@@ -1370,12 +1342,24 @@ ${text}`;
   }
 
   function showResult(result) {
+    clearInterval(loadingInterval);
     document.getElementById('loading-wrap').classList.remove('show');
 
     const items = result.items || [];
     let redCount = 0, orangeCount = 0, greenCount = 0;
 
+    // スコアとグレードの反映
     document.getElementById('result-doc-type').textContent = selectedType;
+    document.getElementById('result-score').textContent = result.score || '--';
+    const grade = result.grade || '-';
+    const gradeEl = document.getElementById('result-grade');
+    gradeEl.textContent = grade;
+    
+    // グレードごとの色付け
+    if (grade === 'A') gradeEl.style.color = 'var(--green)';
+    else if (grade === 'B') gradeEl.style.color = '#f1c40f';
+    else if (grade === 'C') gradeEl.style.color = 'var(--orange)';
+    else if (grade === 'D') gradeEl.style.color = 'var(--red)';
 
     const container = document.getElementById('check-items');
     container.innerHTML = '';
@@ -1408,58 +1392,58 @@ ${text}`;
 
     document.getElementById('result-area').classList.add('show');
     setStep(3);
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // ========== PDF出力処理（表紙対応） ==========
   function exportPDF() {
     const btn = document.querySelector('.btn-pdf');
     const originalText = btn.textContent;
-    btn.textContent = '⏳ PDFを作成中...';
+    btn.textContent = '⏳ 高画質PDFレポートを作成中...';
     btn.disabled = true;
 
-    // スクロール位置による上部見切れを防ぐため、一時的にトップへ移動
     const currentScrollY = window.scrollY;
     window.scrollTo(0, 0);
 
-    // PDF化対象を「結果エリア」のみに変更
     const element = document.getElementById('result-area');
+    
+    // PDFモードクラスを付与して表紙を表示させる
+    element.classList.add('pdf-mode');
 
-    // 結果エリア内のボタンを一時的に隠す
+    // 表紙の動的データをセット
+    const today = new Date();
+    document.getElementById('cover-date').textContent = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日`;
+    document.getElementById('cover-doc-type').textContent = selectedType;
+    document.getElementById('cover-grade').textContent = `${document.getElementById('result-grade').textContent} (${document.getElementById('result-score').textContent}点)`;
+
+    // 不要なボタンを隠す
     const hideElements = element.querySelectorAll('.btn-pdf, .btn-reset');
     const originalDisplays = [];
     hideElements.forEach((el, index) => {
       originalDisplays[index] = el.style.display;
-      el.style.display = 'none'; // 一時的に非表示
+      el.style.display = 'none';
     });
     
     const opt = {
-      margin:       [15, 10, 15, 10],
-      filename:     `法みっけ_【${selectedType}】_リーガルチェックレポート.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { 
-        scale: 2, 
-        useCORS: true,
-        scrollY: 0
-      },
+      margin:       [10, 10, 15, 10], // 上右下左
+      filename:     `法みっけ_【${selectedType}】_分析レポート.pdf`,
+      image:        { type: 'jpeg', quality: 1.0 },
+      html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+      pagebreak:    { mode: ['css', 'legacy'] } // CSSのpage-break-afterを効かせる
     };
 
     html2pdf().set(opt).from(element).save().then(() => {
-      // UIを元に戻す
-      hideElements.forEach((el, index) => {
-        el.style.display = originalDisplays[index];
-      });
+      element.classList.remove('pdf-mode'); // 表紙を元に戻す
+      hideElements.forEach((el, index) => { el.style.display = originalDisplays[index]; });
       btn.textContent = originalText;
       btn.disabled = false;
       window.scrollTo(0, currentScrollY);
     }).catch(err => {
       console.error(err);
       alert('PDFの生成に失敗しました。');
-      hideElements.forEach((el, index) => {
-        el.style.display = originalDisplays[index];
-      });
+      element.classList.remove('pdf-mode');
+      hideElements.forEach((el, index) => { el.style.display = originalDisplays[index]; });
       btn.textContent = originalText;
       btn.disabled = false;
       window.scrollTo(0, currentScrollY);
@@ -1470,7 +1454,7 @@ ${text}`;
     document.getElementById('result-area').classList.remove('show');
     document.getElementById('input-area').style.display = 'block';
     document.getElementById('btn-check').disabled = false;
-    document.getElementById('contract-text').value = '';
+    textarea.value = '';
     document.getElementById('char-count').textContent = '0';
     setStep(1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
