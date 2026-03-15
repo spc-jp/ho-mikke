@@ -878,9 +878,107 @@
     .summary-counts { flex-wrap: wrap; gap: 20px; }
     .card { padding: 20px; }
   }
+
+  /* パスワードゲート */
+  .pw-gate {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13,27,42,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .pw-gate.show { display: flex; }
+  .pw-gate-box {
+    background: #fff;
+    border-radius: 8px;
+    padding: 48px 36px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    animation: fadeUp 0.4s ease both;
+  }
+  .pw-gate-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .pw-gate-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .pw-gate-title span { color: var(--gold); }
+  .pw-gate-sub {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+  .pw-gate-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    text-align: center;
+    margin-bottom: 16px;
+    font-family: 'Noto Sans JP', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .pw-gate-input:focus { border-color: var(--gold); }
+  .pw-gate-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+  }
+  .pw-gate-btn:hover { background: var(--navy2); transform: translateY(-1px); }
+  .pw-gate-error {
+    font-size: 13px;
+    color: var(--red);
+    font-weight: 700;
+    margin-top: 14px;
+    min-height: 20px;
+  }
+  .pw-gate-note {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 24px;
+  }
+  .main-locked { filter: blur(6px); pointer-events: none; user-select: none; }
 </style>
 </head>
 <body>
+
+<!-- パスワードゲート -->
+<div class="pw-gate show" id="pw-gate">
+  <div class="pw-gate-box">
+    <span class="pw-gate-icon">⚖️</span>
+    <div class="pw-gate-title">法<span>みっけ</span> Pro</div>
+    <p class="pw-gate-sub" id="gate-sub">ご購入ありがとうございます。<br>パスワードを入力してご利用ください。</p>
+    <input class="pw-gate-input" type="password" id="gate-pw" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')checkGate()">
+    <button class="pw-gate-btn" onclick="checkGate()">入室する</button>
+    <div class="pw-gate-error" id="gate-error"></div>
+    <p class="pw-gate-note">ご購入・お問い合わせ：Smile Plus Consulting</p>
+  </div>
+</div>
 
 <header>
   <div class="header-inner">
@@ -1082,6 +1180,37 @@
 </div>
 
 <script>
+  // ========== パスワードゲート ==========
+  const CORRECT_PW = 'ho-pro2025';
+  const PRO_START = new Date('2026-04-01T00:00:00+09:00'); // 日本時間4月1日
+
+  function checkGate() {
+    const input = document.getElementById('gate-pw').value;
+    const errorEl = document.getElementById('gate-error');
+    if (input === CORRECT_PW) {
+      document.getElementById('pw-gate').classList.remove('show');
+      errorEl.textContent = '';
+    } else {
+      errorEl.textContent = 'パスワードが正しくありません。';
+      document.getElementById('gate-pw').value = '';
+      document.getElementById('gate-pw').focus();
+    }
+  }
+
+  // ページ読み込み時に日付判定
+  window.addEventListener('DOMContentLoaded', () => {
+    const now = new Date();
+    if (now >= PRO_START) {
+      // 4月1日以降：パスワードゲートを表示
+      document.getElementById('pw-gate').classList.add('show');
+      document.getElementById('gate-sub').innerHTML = 'ご購入ありがとうございます。<br>パスワードを入力してご利用ください。';
+    } else {
+      // 3月31日まで：ゲートを非表示（無料開放）
+      document.getElementById('pw-gate').classList.remove('show');
+    }
+  });
+  // ========================================
+
   let selectedType = '一般契約書';
   let loadingInterval;
   const loadingMessages = [
