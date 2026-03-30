@@ -4,10 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>法みっけ｜契約書リーガルチェックAI</title>
+
+<!-- Favicon -->
+<link rel="icon" href="favicon.png" type="image/png">
+
+<!-- OGP設定 -->
+<meta property="og:title" content="法みっけ｜契約書リーガルチェックAI">
+<meta property="og:description" content="システムを活用して契約書や法律文書に潜むリスクを迅速に洗い出し、安全な取引を行うためのサポートを目的としたプロフェッショナルツールです。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://あなたのドメイン.com/"> <!-- ※公開時に実際のURLに変更してください -->
+<meta property="og:image" content="https://あなたのドメイン.com/ogp.jpg"> <!-- ※公開時に実際の画像URL(絶対パス)に変更してください -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="法みっけ｜契約書リーガルチェックAI">
+<meta name="twitter:description" content="システムを活用して契約書や法律文書に潜むリスクを迅速に洗い出し、安全な取引を行うためのサポートを目的としたプロフェッショナルツールです。">
+<meta name="twitter:image" content="https://あなたのドメイン.com/ogp.jpg"> <!-- ※公開時に実際の画像URL(絶対パス)に変更してください -->
+
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-<!-- PDF生成用ライブラリを追加 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<!-- PDF読み込み用ライブラリを追加 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -878,107 +891,9 @@
     .summary-counts { flex-wrap: wrap; gap: 20px; }
     .card { padding: 20px; }
   }
-
-  /* パスワードゲート */
-  .pw-gate {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(13,27,42,0.92);
-    backdrop-filter: blur(12px);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .pw-gate.show { display: flex; }
-  .pw-gate-box {
-    background: #fff;
-    border-radius: 8px;
-    padding: 48px 36px;
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    animation: fadeUp 0.4s ease both;
-  }
-  .pw-gate-icon {
-    font-size: 48px;
-    display: block;
-    margin-bottom: 20px;
-  }
-  .pw-gate-title {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 8px;
-  }
-  .pw-gate-title span { color: var(--gold); }
-  .pw-gate-sub {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 32px;
-    line-height: 1.7;
-  }
-  .pw-gate-input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    font-size: 18px;
-    letter-spacing: 0.2em;
-    text-align: center;
-    margin-bottom: 16px;
-    font-family: 'Noto Sans JP', sans-serif;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .pw-gate-input:focus { border-color: var(--gold); }
-  .pw-gate-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--navy);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.1em;
-    transition: all 0.2s;
-  }
-  .pw-gate-btn:hover { background: var(--navy2); transform: translateY(-1px); }
-  .pw-gate-error {
-    font-size: 13px;
-    color: var(--red);
-    font-weight: 700;
-    margin-top: 14px;
-    min-height: 20px;
-  }
-  .pw-gate-note {
-    font-size: 11px;
-    color: #aaa;
-    margin-top: 24px;
-  }
-  .main-locked { filter: blur(6px); pointer-events: none; user-select: none; }
 </style>
 </head>
 <body>
-
-<!-- パスワードゲート -->
-<div class="pw-gate show" id="pw-gate">
-  <div class="pw-gate-box">
-    <span class="pw-gate-icon">⚖️</span>
-    <div class="pw-gate-title">法<span>みっけ</span> Pro</div>
-    <p class="pw-gate-sub" id="gate-sub">ご購入ありがとうございます。<br>パスワードを入力してご利用ください。</p>
-    <input class="pw-gate-input" type="password" id="gate-pw" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')checkGate()">
-    <button class="pw-gate-btn" onclick="checkGate()">入室する</button>
-    <div class="pw-gate-error" id="gate-error"></div>
-    <p class="pw-gate-note">ご購入・お問い合わせ：Smile Plus Consulting</p>
-  </div>
-</div>
 
 <header>
   <div class="header-inner">
@@ -1011,7 +926,6 @@
 </header>
 
 <main>
-  <!-- ステップバー -->
   <div class="step-bar" id="step-bar">
     <div class="step active" id="step1">
       <div class="step-num">1</div>
@@ -1029,7 +943,6 @@
     </div>
   </div>
 
-  <!-- 入力フォーム -->
   <div id="input-area">
     <div class="card">
       <div class="card-title">チェックする文書の種類を選んでください</div>
@@ -1043,7 +956,6 @@
         <button class="check-type-btn" data-type="薬機法関連文書">💊 薬機法関連文書</button>
       </div>
 
-      <!-- セキュリティ明記 -->
       <div class="security-notice">
         <span class="icon">🔒</span>
         <div>
@@ -1052,7 +964,6 @@
         </div>
       </div>
 
-      <!-- ファイルドロップエリア -->
       <div class="file-drop-area" id="file-drop-area">
         <input type="file" id="file-input" accept=".txt,.pdf" style="display: none;">
         <div class="file-drop-icon">📄</div>
@@ -1085,23 +996,20 @@
     </div>
   </div>
 
-  <!-- ローディング（プロセス可視化版） -->
   <div class="loading-wrap" id="loading-wrap">
     <div class="loading-spinner"></div>
-    <div class="loading-status-msg" id="loading-status">AIが契約書の構造を解析中...</div>
+    <div class="loading-status-msg" id="loading-status">システムが契約書の構造を解析中...</div>
     <div class="loading-text">
       <span class="loading-dots"></span><br>
       <small style="color:#aaa; font-size:12px; margin-top:8px; display:block;">※文字数により数十秒かかる場合があります。このままお待ちください。</small>
     </div>
   </div>
 
-  <!-- 結果エリア -->
   <div id="result-area">
-    <!-- PDF出力時のみ表示される表紙 -->
     <div class="pdf-cover">
       <div class="pdf-cover-logo">法</div>
       <div class="pdf-cover-title">LEGAL CHECK REPORT</div>
-      <div class="pdf-cover-subtitle">契約書リーガルチェック AI分析レポート</div>
+      <div class="pdf-cover-subtitle">契約書リーガルチェック 分析レポート</div>
       <div class="pdf-cover-details">
         <div class="pdf-cover-row"><span>対象文書</span> <div id="cover-doc-type">一般契約書</div></div>
         <div class="pdf-cover-row"><span>出力日</span> <div id="cover-date"></div></div>
@@ -1140,7 +1048,7 @@
     <div class="check-items" id="check-items"></div>
 
     <div class="overall-comment">
-      <div class="overall-label">AI OVERALL COMMENT</div>
+      <div class="overall-label">OVERALL COMMENT</div>
       <div class="overall-text" id="overall-text"></div>
     </div>
 
@@ -1155,7 +1063,6 @@
   ※本ツールはAIによる参考情報提供です。最終判断は専門家にご相談ください。
 </footer>
 
-<!-- 使い方モーダル -->
 <div class="modal-overlay" id="howto-modal" onclick="closeHowTo(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeHowTo()">&times;</button>
@@ -1163,7 +1070,7 @@
     
     <div class="modal-section">
       <h3>🎯 アプリの目的</h3>
-      <p>「法みっけ」は、AIを活用して契約書や法律文書に潜むリスクを迅速に洗い出し、安全な取引を行うためのサポートを目的としたプロフェッショナルツールです。専門家に相談する前のセルフチェックとしてご活用いただけます。</p>
+      <p>「法みっけ」は、システムを活用して契約書や法律文書に潜むリスクを迅速に洗い出し、安全な取引を行うためのサポートを目的としたプロフェッショナルツールです。専門家に相談する前のセルフチェックとしてご活用いただけます。</p>
     </div>
     
     <div class="modal-section">
@@ -1171,8 +1078,8 @@
       <ul class="modal-list">
         <li><strong>ステップ1：</strong> チェックする文書の種類（一般契約書、NDAなど）を選択します。</li>
         <li><strong>ステップ2：</strong> 契約書のPDFまたはテキストファイルをドラッグ＆ドロップして読み込ませるか、下のエリアに直接テキストを貼り付けます。</li>
-        <li><strong>ステップ3：</strong> 「AIリーガルチェックを開始する」ボタンをクリックします。</li>
-        <li><strong>ステップ4：</strong> 数十秒でAIが高度な分析を行い、総合評価（100点満点）とリスク度合いに応じた結果・改善ヒントを表示します。</li>
+        <li><strong>ステップ3：</strong> 「リーガルチェックを開始する」ボタンをクリックします。</li>
+        <li><strong>ステップ4：</strong> 数十秒でシステムが高度な分析を行い、総合評価（100点満点）とリスク度合いに応じた結果・改善ヒントを表示します。</li>
         <li><strong>ステップ5：</strong> 「PDFで保存する」ボタンから、表紙付きの専用レポートを保存・印刷して保管してください。</li>
       </ul>
     </div>
@@ -1180,41 +1087,10 @@
 </div>
 
 <script>
-  // ========== パスワードゲート ==========
-  const CORRECT_PW = 'ho-pro2025';
-  const PRO_START = new Date('2026-04-01T00:00:00+09:00'); // 日本時間4月1日
-
-  function checkGate() {
-    const input = document.getElementById('gate-pw').value;
-    const errorEl = document.getElementById('gate-error');
-    if (input === CORRECT_PW) {
-      document.getElementById('pw-gate').classList.remove('show');
-      errorEl.textContent = '';
-    } else {
-      errorEl.textContent = 'パスワードが正しくありません。';
-      document.getElementById('gate-pw').value = '';
-      document.getElementById('gate-pw').focus();
-    }
-  }
-
-  // ページ読み込み時に日付判定
-  window.addEventListener('DOMContentLoaded', () => {
-    const now = new Date();
-    if (now >= PRO_START) {
-      // 4月1日以降：パスワードゲートを表示
-      document.getElementById('pw-gate').classList.add('show');
-      document.getElementById('gate-sub').innerHTML = 'ご購入ありがとうございます。<br>パスワードを入力してご利用ください。';
-    } else {
-      // 3月31日まで：ゲートを非表示（無料開放）
-      document.getElementById('pw-gate').classList.remove('show');
-    }
-  });
-  // ========================================
-
   let selectedType = '一般契約書';
   let loadingInterval;
   const loadingMessages = [
-    "AIが契約書の構造を解析中...",
+    "システムが契約書の構造を解析中...",
     "当事者間の権利義務バランスを評価中...",
     "損害賠償・解除条項のリスクを特定中...",
     "業種特有の抜け漏れがないか確認中...",
@@ -1364,7 +1240,7 @@
     document.getElementById('howto-modal').classList.remove('show');
   }
 
-  // ========== AI分析メイン処理 ==========
+  // ========== 分析メイン処理 ==========
   async function startCheck() {
     const text = textarea.value.trim();
 
